@@ -50,7 +50,10 @@ function displayTopicsInfo(){
 			// Displays the rating
 			thumbnail.append(ratingText);
 
-			$('#gifTiles').prepend(thumbnail);
+			$('[data-colnum= ' + j % 3 + ']').prepend(thumbnail);
+
+
+			//$('#gifTiles').prepend(thumbnail);
 		}
 
 	});
