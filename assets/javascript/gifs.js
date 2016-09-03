@@ -1,11 +1,11 @@
 //Initial array of political topics
-var topics = ['Barack Obama', 'Election 2016' ,'Mike Pence', 'Tim Kaine', 'Donald Trump', 'Hillary Clinton', 'Ted Cruz', 'Gary Johnson', 'Joe Biden', 'Michelle Obama', 'Colbert Report', 'Rachael Maddow', 'Glenn Beck'];
+var topics = ['Barack Obama', 'Election 2016' ,'Mike Pence', 'Tim Kaine', 'Donald Trump', 'Hillary Clinton', 'Sarah Palin', 'Ted Cruz', 'Gary Johnson', 'Joe Biden', 'Michelle Obama', 'Colbert Report', 'Rachael Maddow', 'Glenn Beck'];
 
 //function will re-renders the HTML to display requested comment
 function displayTopicsInfo(){
 	
 	var topic = $(this).attr('data-name');
-	var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=dc6zaTOxFJmzC&limit=10";
+	var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=dc6zaTOxFJmzC&limit=12";
 
 	//Creates AJAX call for specific topic requested
 	$.ajax({url: queryURL, method:'GET'}).done(function(response){
@@ -19,33 +19,38 @@ function displayTopicsInfo(){
 
 		for (var j = 0; j < results.length; j++){
 
+			var thumbnail = $('<div class="thumbnail">');
+
 			//Retrives URL for different states of gif
-			var imageSrc = results[j].images.fixed_height_small_still.url;
-			var imageDataStill = results[j].images.fixed_height_small_still.url;
-			var imageDataAnimate = results[j].images.fixed_height_small.url; 
+			var imageSrc = results[j].images.downsized.url;
+			var imageDataStill = results[j].images.downsized_still.url;
+			var imageDataAnimate = results[j].images.downsized.url; 
 
 			//Creates element to have Gif displayed
 			var imgGif = $('<img>')
 			imgGif.attr('src', imageSrc);
 			imgGif.attr('data-still', imageDataStill);
 			imgGif.attr('data-animate', imageDataAnimate);
-			imgGif.attr('data-state', "still");
+			imgGif.attr('data-state', "animate");
 			imgGif.attr('alt', 'political Gif');
 			imgGif.addClass('gifTile');
 		
 			//Diplays the gif
-			gifDiv.append(imgGif);
+			thumbnail.append(imgGif);
 
 			//Retrives rating info and is place in variable 'rating'
 			var rating = results[j].rating;
 
+			//Coverted rating into UpperCase
+			var UCrating = rating.toUpperCase();
+
 			// Creates element to have the rating displayed 
-			var ratingText = $('<p>').text("Rating: " + rating);
+			var ratingText = $('<div class="caption">').text("Rating: " + UCrating);
 
 			// Displays the rating
-			gifDiv.append(ratingText);
+			thumbnail.append(ratingText);
 
-			$('#gifTiles').prepend(gifDiv);
+			$('#gifTiles').prepend(thumbnail);
 		}
 
 	});
@@ -60,7 +65,8 @@ function renderButtons(){
 	//Loops through arrays of topics, creates button and adds it to html
 	for (var i=0; i<topics.length; i++){
 		var a = $('<button>')
-		a.addClass('topic');
+		a.addClass('topic btn btn-default');
+		a.attr('type', 'button');
 		a.attr('data-name', topics[i]);
 		a.text(topics[i]);
 		$('#btnsTopics').append(a);
@@ -81,12 +87,12 @@ $('#addGif').on('click', function(){
 function gifClick(){
 	var state = $(this).attr('data-state');
 
-	if(state == 'still'){
-		$(this).attr('src', $(this).data('animate'));
-		$(this).attr('data-state', 'animate');
-	}else{
+	if(state == 'animate'){
 		$(this).attr('src', $(this).data('still'));
 		$(this).attr('data-state', 'still');
+	}else{
+		$(this).attr('src', $(this).data('animate'));
+		$(this).attr('data-state', 'animate');
 	}	
 }
 
