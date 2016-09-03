@@ -1,0 +1,21 @@
+.container {
+
+    margin: 0 auto;
+}
+
+
+.navbar-color{
+	background-color: #0066cc;
+}
+
+.navbar-h1{
+	font-weight: bolder;
+	color: #eee;
+}
+
+#navbar-moto{
+	margin-left: 0px;
+	margin-top: 0px;
+	color: #eee;
+}
+
